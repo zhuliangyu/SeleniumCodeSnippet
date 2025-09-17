@@ -24,6 +24,27 @@ public final class DebugUtils {
 
     /* -------------------- Visual helpers -------------------- */
 
+    public static void highlightAtOffset(WebDriver driver, WebElement base, int offsetX, int offsetY) {
+        // 计算元素左上角在页面中的位置
+        org.openqa.selenium.Point loc = base.getLocation();
+        int absX = loc.getX() + offsetX;
+        int absY = loc.getY() + offsetY;
+
+        // 用 JS 在该位置画一个小圆点
+        String script = "var dot = document.createElement('div');" +
+                "dot.style.position='absolute';" +
+                "dot.style.left='" + absX + "px';" +
+                "dot.style.top='" + absY + "px';" +
+                "dot.style.width='12px';" +
+                "dot.style.height='12px';" +
+                "dot.style.background='red';" +
+                "dot.style.borderRadius='50%';" +
+                "dot.style.border='2px solid black';" +
+                "dot.style.zIndex='999999';" +
+                "document.body.appendChild(dot);";
+        ((JavascriptExecutor) driver).executeScript(script);
+    }
+
     public static void highlightAtCoordinates(WebDriver driver, int x, int y) {
         String script = "var dot = document.createElement('div');" +
                 "dot.style.position='absolute';" +
